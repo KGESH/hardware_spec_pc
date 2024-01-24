@@ -1,7 +1,6 @@
 import { IComputer } from '@/types/model/computer/computerType';
-import { ESTIMATE_HOME_PAGE_URL } from '@/constants/url';
 import { Button } from '@/components/ui/button';
-import { useEstimate } from '@/components/hooks/useEstimate';
+import { useEstimate } from '@/hooks/useEstimate';
 
 type Props = IComputer;
 
@@ -9,8 +8,7 @@ export default function EstimateButton(props: Props) {
   const { mutate, isSuccess, isPending } = useEstimate();
 
   const handleSubmit = () => {
-    const url = new URL('/estimate', ESTIMATE_HOME_PAGE_URL);
-    mutate({ endpoint: url.href, computer: props });
+    mutate({ computer: props });
   };
 
   if (isSuccess) {
