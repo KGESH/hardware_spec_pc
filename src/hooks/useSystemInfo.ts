@@ -1,4 +1,4 @@
-import { getSystemInfo } from '@/services/system/systemInfoService';
+import { getSystemInfo } from '@/services/system/systemInfoService.ts';
 import { useQuery } from '@tanstack/react-query';
 
 export const useSystemInfo = () => {

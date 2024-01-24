@@ -1,4 +1,4 @@
-import { useSystemInfo } from '@/components/hooks/useSystemInfo';
+import { useSystemInfo } from '@/hooks/useSystemInfo';
 import { HardwarePanel } from '@/components/HardwarePanel';
 import { Button } from '@/components/ui/button';
 import EstimateButton from '@/components/EstimateButton.tsx';
