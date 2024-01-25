@@ -13,12 +13,11 @@ export function formatCpuDisplayName(dto: ISystemInfo): string {
 }
 
 export function formatCpuBrand(sourceName: string): string {
-  const sourceBrand = sourceName.toLowerCase();
   const nameTable = CPU_VENDOR_NAME_TABLE.map((name) => name.toLowerCase());
 
-  for (const name of nameTable) {
-    if (sourceBrand.includes(name)) {
-      return name;
+  for (const [index, name] of nameTable.entries()) {
+    if (sourceName.toLowerCase().includes(name)) {
+      return CPU_VENDOR_NAME_TABLE[index];
     }
   }
 
