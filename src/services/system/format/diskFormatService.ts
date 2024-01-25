@@ -5,13 +5,14 @@ import { DISK_VENDOR_NAME_TABLE } from '@/constants/diskConstants.ts';
 import { IWindowsDisk } from '@/types/dto/windows/diskDto.ts';
 
 export function formatDiskVendor(disk: IWindowsDisk) {
-  const vendorName = DISK_VENDOR_NAME_TABLE.find(
-    (vendor) =>
-      disk.Model?.toLowerCase().includes(vendor.toLowerCase()) ||
-      disk.Caption?.toLowerCase().includes(vendor.toLowerCase()),
-  );
+  const vendor =
+    DISK_VENDOR_NAME_TABLE.find(
+      (vendor) =>
+        disk.Model?.toLowerCase().includes(vendor.toLowerCase()) ||
+        disk.Caption?.toLowerCase().includes(vendor.toLowerCase()),
+    ) ?? 'UNKNOWN';
 
-  return vendorName || 'UNKNOWN';
+  return vendor;
 }
 
 export function transformDisks(dto: ISystemInfo): IDisk[] {

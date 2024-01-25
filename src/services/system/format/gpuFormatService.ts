@@ -3,15 +3,12 @@ import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { GPU_VENDOR_NAME_TABLE } from '@/constants/gpuConstants.ts';
 
 export function formatGpuVendor(sourceName: string): string {
-  const nameTable = GPU_VENDOR_NAME_TABLE.map((name) => name.toLowerCase());
+  const vendor =
+    GPU_VENDOR_NAME_TABLE.find((vendor) =>
+      sourceName.toLowerCase().includes(vendor.toLowerCase()),
+    ) ?? sourceName;
 
-  for (const [index, name] of nameTable.entries()) {
-    if (sourceName.toLowerCase().includes(name)) {
-      return GPU_VENDOR_NAME_TABLE[index];
-    }
-  }
-
-  return sourceName;
+  return vendor;
 }
 export function transformGpu(dto: ISystemInfo): IGpu {
   if (dto.os_type === 'Darwin') {
