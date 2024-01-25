@@ -1,7 +1,7 @@
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { IDisk } from '@/types/model/computer/diskType.ts';
 import { formatBytes } from '@/services/system/format/commonFormatService.ts';
-import { DISK_VENDOR_NAME_TABLE } from '@/constants/disk.constants.ts';
+import { DISK_VENDOR_NAME_TABLE } from '@/constants/diskConstants.ts';
 import { IWindowsDisk } from '@/types/dto/windows/diskDto.ts';
 
 export function formatDiskVendor(disk: IWindowsDisk) {

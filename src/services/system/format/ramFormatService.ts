@@ -2,7 +2,7 @@ import { IWindowsRam } from '@/types/dto/windows/ramDto.ts';
 import {
   MEMORY_TYPE,
   RAM_VENDOR_NAME_TABLE,
-} from '@/constants/ram.constants.ts';
+} from '@/constants/ramConstants.ts';
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { IRam } from '@/types/model/computer/ramType.ts';
 import { formatBytes } from '@/services/system/format/commonFormatService.ts';

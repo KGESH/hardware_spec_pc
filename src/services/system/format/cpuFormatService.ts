@@ -1,6 +1,6 @@
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { ICpu } from '@/types/model/computer/cpuType.ts';
-import { CPU_VENDOR_NAME_TABLE } from '@/constants/cpu.constants.ts';
+import { CPU_VENDOR_NAME_TABLE } from '@/constants/cpuConstants.ts';
 
 export function formatCpuDisplayName(dto: ISystemInfo): string {
   // macOS
@@ -12,15 +12,9 @@ export function formatCpuDisplayName(dto: ISystemInfo): string {
   return dto.system.cpu[0].Name;
 }
 
-export function formatCpuBrand({
-  sourceVendorName,
-  destVendorNameTable,
-}: {
-  sourceVendorName: string;
-  destVendorNameTable: string[];
-}): string {
-  const sourceBrand = sourceVendorName.toLowerCase();
-  const nameTable = destVendorNameTable.map((name) => name.toLowerCase());
+export function formatCpuBrand(sourceName: string): string {
+  const sourceBrand = sourceName.toLowerCase();
+  const nameTable = CPU_VENDOR_NAME_TABLE.map((name) => name.toLowerCase());
 
   for (const name of nameTable) {
     if (sourceBrand.includes(name)) {
@@ -28,7 +22,7 @@ export function formatCpuBrand({
     }
   }
 
-  return sourceVendorName;
+  return sourceName;
 }
 
 export function transformCpu(dto: ISystemInfo): ICpu {
@@ -36,10 +30,7 @@ export function transformCpu(dto: ISystemInfo): ICpu {
     return {
       type: 'CPU',
       displayName: formatCpuDisplayName(dto),
-      vendorName: formatCpuBrand({
-        sourceVendorName: dto.system.cpu.vendor_id,
-        destVendorNameTable: CPU_VENDOR_NAME_TABLE,
-      }),
+      vendorName: formatCpuBrand(dto.system.cpu.vendor_id),
       coreCount: dto.system.cpu.core_count,
     };
   }
@@ -48,7 +39,7 @@ export function transformCpu(dto: ISystemInfo): ICpu {
     return {
       type: 'CPU',
       displayName: formatCpuDisplayName(dto),
-      vendorName: dto.system.cpu[0].Manufacturer,
+      vendorName: formatCpuBrand(dto.system.cpu[0].Manufacturer),
       coreCount: dto.system.cpu[0].NumberOfCores,
     };
   }
