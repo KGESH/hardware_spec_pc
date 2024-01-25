@@ -5,6 +5,6 @@ export const DISK_VENDOR_NAME_TABLE = [
   'SANDISK',
   'SEAGATE',
   'TOSHIBA',
-  'HYNIX',
+  'Hynix',
   'KINGSTON',
 ];

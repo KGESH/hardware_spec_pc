@@ -8,11 +8,11 @@ export const MEMORY_TYPE = {
 
 export const RAM_VENDOR_NAME_TABLE = [
   'SAMSUNG',
-  'micron',
-  'corsair',
-  'hynix',
-  'geil',
-  'kingston',
-  'patriot',
-  'teamgroup',
+  'MICRON',
+  'Corsair',
+  'Hynix',
+  'Geil',
+  'Kingston',
+  'Patriot',
+  'TeamGroup',
 ] as const;
