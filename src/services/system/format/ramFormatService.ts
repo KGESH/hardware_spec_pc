@@ -1,24 +1,8 @@
-export function formatBytes(bytes: number): string {
-  const kilobyte = 1024;
-  const megabyte = kilobyte * 1024;
-  const gigabyte = megabyte * 1024;
-  const terabyte = gigabyte * 1024;
-
-  if (bytes >= terabyte) {
-    return `${Math.floor(bytes / terabyte)}TB`;
-  } else if (bytes >= gigabyte) {
-    return `${Math.floor(bytes / gigabyte)}GB`;
-  } else if (bytes >= megabyte) {
-    return `${Math.floor(bytes / megabyte)}MB`;
-  } else if (bytes >= kilobyte) {
-    return `${Math.floor(bytes / kilobyte)}KB`;
-  } else {
-    return `${bytes}B`;
-  }
-}
-
 import { IWindowsRam } from '@/types/dto/windows/ramDto.ts';
-import { MEMORY_TYPE } from '@/constants/ram.constant.ts';
+import { MEMORY_TYPE } from '@/constants/ram.constants.ts';
+import { ISystemInfo } from '@/types/dto/commonDto.ts';
+import { IRam } from '@/types/model/computer/ramType.ts';
+import { formatBytes } from '@/services/system/format/commonFormatService.ts';
 
 export function formatPhysicalMemoryType(ram: IWindowsRam): string {
   switch (ram.MemoryType) {
@@ -56,4 +40,25 @@ export function formatMemoryType(ram: IWindowsRam): string {
     default:
       return formatPhysicalMemoryType(ram);
   }
+}
+
+export function transformRams(dto: ISystemInfo): IRam[] {
+  if (dto.os_type === 'Windows') {
+    return dto.system.rams.map((ram) => ({
+      type: 'RAM',
+      displayName: `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`,
+      vendorName: ram.Manufacturer,
+    }));
+  }
+
+  if (dto.os_type === 'Darwin') {
+    return dto.system.rams.map((ram) => ({
+      type: 'RAM',
+      displayName: formatBytes(ram.total_memory),
+      vendorName: dto.system.cpu.vendor_id,
+    }));
+  }
+
+  // Unknown OS
+  return [];
 }
