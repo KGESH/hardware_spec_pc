@@ -2,9 +2,9 @@ export type IWindowsRam = {
   Capacity: number;
   Speed: number;
   Manufacturer: string; // Samsung, etc.
-  MemoryType: number; // DDR3, DDR4, DDR5, etc.
+  MemoryType: number; // Physical memory type. ( DDR3(24), DDR4(26), DDR5(28), etc.)
+  SMBIOSMemoryType: number; // SMBIOS memory type. ( DDR3(24), DDR4(26), DDR5(28), etc.)
   PartNumber: string;
-  SMBIOSMemoryType: number; // Todo: check PascalCase. smbios_memory_type
   SerialNumber: string | null;
   FormFactor: number | null;
   DeviceLocator: string | null;
