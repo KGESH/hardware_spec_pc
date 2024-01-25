@@ -1,8 +1,20 @@
 import { IWindowsRam } from '@/types/dto/windows/ramDto.ts';
-import { MEMORY_TYPE } from '@/constants/ram.constants.ts';
+import {
+  MEMORY_TYPE,
+  RAM_VENDOR_NAME_TABLE,
+} from '@/constants/ram.constants.ts';
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { IRam } from '@/types/model/computer/ramType.ts';
 import { formatBytes } from '@/services/system/format/commonFormatService.ts';
+
+export function formatRamVendor(ram: IWindowsRam): string {
+  const vendor =
+    RAM_VENDOR_NAME_TABLE.find((vendor) =>
+      ram.Manufacturer.toLowerCase().includes(vendor.toLowerCase()),
+    ) ?? ram.Manufacturer;
+
+  return vendor;
+}
 
 export function formatPhysicalMemoryType(ram: IWindowsRam): string {
   switch (ram.MemoryType) {
@@ -47,7 +59,7 @@ export function transformRams(dto: ISystemInfo): IRam[] {
     return dto.system.rams.map((ram) => ({
       type: 'RAM',
       displayName: `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`,
-      vendorName: ram.Manufacturer,
+      vendorName: formatRamVendor(ram),
     }));
   }
 
