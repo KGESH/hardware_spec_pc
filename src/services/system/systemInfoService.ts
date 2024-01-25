@@ -87,7 +87,10 @@ function transform(dto: ISystemInfo): IComputer {
         },
         motherboard: {
           type: 'M/B',
-          displayName: dto.system.motherboard[0].Caption, // Caption or Name
+          displayName:
+            dto.system.motherboard[0].Product ??
+            dto.system.motherboard[0].Model ??
+            dto.system.motherboard[0].Caption, // Caption or Name
           vendorName: dto.system.motherboard[0].Manufacturer,
           chipset: dto.system.motherboard[0].Product,
         },
@@ -135,6 +138,10 @@ function transform(dto: ISystemInfo): IComputer {
 
 export async function getSystemInfo(): Promise<IComputer> {
   const response = await invokeSystemCommand<ISystemInfo>('get_system_info');
+
+  console.log(`====================`);
+  console.log(`Memory Info`, response.system.rams[0]);
+  console.log(`====================`);
 
   console.log(response);
 

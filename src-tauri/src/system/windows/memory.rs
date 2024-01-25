@@ -19,6 +19,8 @@ pub struct Win32PhysicalMemory {
     // Form factor for the memory chip
     pub form_factor: Option<u16>,
     pub serial_number: Option<String>,
+    // SMBIOSMemoryType Todo: check pascal case
+    pub smbios_memory_type: Option<u16>,
     // Unique identifier for the memory device
     pub tag: Option<String>,
     // Data width of the physical memory in bits
