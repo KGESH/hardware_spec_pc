@@ -34,7 +34,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
       type: 'DISK',
       kind: disk.kind,
       totalSpace: disk.total_space,
-      displayName: `${disk.name} / ${disk.kind} / ${formatBytes(disk.total_space)}`, // Todo: Size labeling check
+      displayName: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`, // Todo: Size labeling check
       vendorName: dto.system.cpu.vendor_id, // Apple
     }));
   }

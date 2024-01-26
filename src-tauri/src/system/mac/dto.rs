@@ -42,10 +42,10 @@ pub struct Ram {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Disk {
     pub name: String,
-
     // "SSD" or "HDD"
     pub kind: String,
     pub file_system: String,
     pub total_space: u64,
+    pub available_space: u64,
     pub removable: bool,
 }
