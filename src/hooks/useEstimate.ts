@@ -8,40 +8,50 @@ import { IComputer } from '@/types/model/computer/computerType.ts';
 import { Body, fetch } from '@tauri-apps/api/http';
 import { IResponse } from '@/types/dto/response/responseType.ts';
 import {
-  createEstimateId,
-  saveEstimateId,
-} from '@/services/estimate/estimateId.ts';
+  createHardwareComponentsEncodingId,
+  saveEncodedId,
+} from '@/services/estimate/id.ts';
+import { IEstimateCreateResponseDto } from '@/types/dto/estimate/estimateDto.ts';
 
 async function createEstimate({
+  estimateId,
   computer,
 }: {
+  estimateId: string;
   computer: IComputer;
-}): Promise<string> {
-  const estimateId = createEstimateId(computer);
-  const endpoint = new URL(`/estimate/${estimateId}`, ESTIMATE_API_BASE_URL);
+}): Promise<IEstimateCreateResponseDto> {
+  const encodedId = createHardwareComponentsEncodingId(computer);
+  const endpoint = new URL(
+    `/estimate/${estimateId}/${encodedId}`,
+    ESTIMATE_API_BASE_URL,
+  );
 
-  const response = await fetch<IResponse<string>>(endpoint.href, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: Body.json(computer),
-  });
-
-  if (!response.ok) console.log('error', response.data, response.status);
+  const response = await fetch<IResponse<IEstimateCreateResponseDto>>(
+    endpoint.href,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: Body.json(computer),
+    },
+  );
 
   const responseDto = response.data;
 
   if (responseDto.status !== 'success') throw new Error(responseDto.message);
 
-  return estimateId;
+  return responseDto.data;
 }
 
 export const useEstimate = () => {
   return useMutation({
     mutationFn: createEstimate,
-    onSuccess: async (estimateId: string) => {
-      saveEstimateId(estimateId);
+    onSuccess: async ({ estimateId, encodedId }) => {
+      saveEncodedId(encodedId);
 
-      const url = new URL(`/estimate/${estimateId}`, ESTIMATE_HOME_PAGE_URL);
+      const url = new URL(
+        `/estimate/${estimateId}/${encodedId}`,
+        ESTIMATE_HOME_PAGE_URL,
+      );
 
       // Open default web browser
       return await shell.open(url.href);
