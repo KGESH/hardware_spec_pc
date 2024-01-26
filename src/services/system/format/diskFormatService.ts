@@ -1,6 +1,9 @@
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { IDisk } from '@/types/model/computer/diskType.ts';
-import { formatBytes } from '@/services/system/format/commonFormatService.ts';
+import {
+  formatBytes,
+  formatDecimalDiskSize,
+} from '@/services/system/format/commonFormatService.ts';
 import { DISK_VENDOR_NAME_TABLE } from '@/constants/diskConstants.ts';
 import { IWindowsDisk } from '@/types/dto/windows/diskDto.ts';
 
@@ -21,7 +24,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
       type: 'DISK',
       kind: disk.InterfaceType,
       totalSpace: disk.Size,
-      displayName: `${disk.Caption} / ${formatBytes(disk.Size)}`, // Todo: Size labeling check
+      displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`, // Todo: Size labeling check
       vendorName: formatDiskVendor(disk),
     }));
   }
