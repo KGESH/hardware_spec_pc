@@ -14,6 +14,7 @@ pub struct Win32Processor {
     manufacturer: Option<String>,
     max_clock_speed: Option<u32>,
     name: Option<String>,
+    serial_number: Option<String>,
     number_of_cores: Option<u32>,
     number_of_logical_processors: Option<u32>,
     processor_id: Option<String>,
