@@ -10,9 +10,12 @@ pub fn get_disks_info() -> Vec<Disk> {
             let kind = disk.kind().to_string();
             let file_system = disk.file_system().to_str().unwrap().to_string();
             let total_space = disk.total_space();
+            let available_space = disk.available_space(); // Todo: Check single disk system.
             let removable = disk.is_removable();
 
             println!("======== Disk ========");
+            println!("Total size: {}", total_space);
+            println!("Available space: {}", disk.available_space());
             println!("{:#?}", disk);
 
             // Only physical disks
@@ -22,6 +25,7 @@ pub fn get_disks_info() -> Vec<Disk> {
                     kind,
                     file_system,
                     total_space,
+                    available_space,
                     removable,
                 })
             } else {
