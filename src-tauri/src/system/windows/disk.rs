@@ -27,7 +27,9 @@ pub struct Win32DiskDrive {
     // ... add other fields as needed ...
 }
 
-pub fn get_disks_info(wmi_con: &WMIConnection) -> Result<Vec<Win32DiskDrive>, Box<dyn std::error::Error>> {
+pub fn get_disks_info(
+    wmi_con: &WMIConnection,
+) -> Result<Vec<Win32DiskDrive>, Box<dyn std::error::Error>> {
     let disks: Vec<Win32DiskDrive> = wmi_con.query()?;
     for disk in &disks {
         let disk_detail = format!("{:#?}\n", disk);

@@ -1,5 +1,5 @@
-use wmi::{WMIConnection, WMIDateTime};
 use serde::{Deserialize, Serialize};
+use wmi::{WMIConnection, WMIDateTime};
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_Processor")]
@@ -21,8 +21,9 @@ pub struct Win32Processor {
     // Add more fields here as needed
 }
 
-
-pub fn get_cpu_info(wmi_con: &WMIConnection) -> Result<Vec<Win32Processor>, Box<dyn std::error::Error>> {
+pub fn get_cpu_info(
+    wmi_con: &WMIConnection,
+) -> Result<Vec<Win32Processor>, Box<dyn std::error::Error>> {
     let processors: Vec<Win32Processor> = wmi_con.query()?;
     for processor in &processors {
         let processor_detail = format!("{:#?}\n", processor);

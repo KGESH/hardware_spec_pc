@@ -68,8 +68,9 @@ pub struct Win32OperatingSystem {
     // ... add other fields as needed ...
 }
 
-
-pub fn get_os_info(wmi_con: &WMIConnection) -> Result<Vec<Win32OperatingSystem>, Box<dyn std::error::Error>> {
+pub fn get_os_info(
+    wmi_con: &WMIConnection,
+) -> Result<Vec<Win32OperatingSystem>, Box<dyn std::error::Error>> {
     let operatingSystems: Vec<Win32OperatingSystem> = wmi_con.query()?;
     for os in &operatingSystems {
         let os_detail = format!("{:#?}\n", os);

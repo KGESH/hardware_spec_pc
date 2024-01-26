@@ -1,6 +1,6 @@
+use crate::system::mac::dto::Gpu;
 use std::process::Command;
 use sysinfo::System;
-use crate::system::mac::dto::Gpu;
 
 pub fn get_gpu_info(system: &System) -> Gpu {
     let output = Command::new("system_profiler")
@@ -24,7 +24,6 @@ pub fn get_gpu_info(system: &System) -> Gpu {
         }
     }
 
-
     Gpu {
         vendor_id,
         brand: gpu_model,
@@ -44,9 +43,7 @@ fn parse_core_count(line: &str) -> Option<u32> {
 
 fn parse_gpu_model(line: &str) -> Option<String> {
     if line.contains("Chipset Model") {
-        line.split(":")
-            .nth(1)
-            .map(|s| s.trim().to_string())
+        line.split(":").nth(1).map(|s| s.trim().to_string())
     } else {
         None
     }

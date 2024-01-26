@@ -19,7 +19,9 @@ pub struct Win32VideoController {
     // ... add other fields as needed ...
 }
 
-pub fn get_gpu_info(wmi_con: &WMIConnection) -> Result<Vec<Win32VideoController>, Box<dyn std::error::Error>> {
+pub fn get_gpu_info(
+    wmi_con: &WMIConnection,
+) -> Result<Vec<Win32VideoController>, Box<dyn std::error::Error>> {
     let video_controllers: Vec<Win32VideoController> = wmi_con.query()?;
     for video_controller in &video_controllers {
         let video_controller_detail = format!("{:#?}\n", video_controller);

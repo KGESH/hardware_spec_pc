@@ -6,7 +6,6 @@ use tauri::Manager;
 mod event;
 pub mod system;
 
-
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![event::get_system_info])

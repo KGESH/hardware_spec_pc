@@ -1,6 +1,5 @@
-use sysinfo::System;
 use crate::system::mac::dto::OS;
-
+use sysinfo::System;
 
 pub fn get_os_info() -> OS {
     let name = System::name().unwrap_or_else(|| "Unknown".to_string());

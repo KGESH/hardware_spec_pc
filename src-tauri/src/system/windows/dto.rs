@@ -1,7 +1,9 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::system::windows::{Win32Processor, Win32OperatingSystem, Win32BaseBoard, Win32PhysicalMemory, Win32VideoController, Win32DiskDrive};
-
+use crate::system::windows::{
+    Win32BaseBoard, Win32DiskDrive, Win32OperatingSystem, Win32PhysicalMemory, Win32Processor,
+    Win32VideoController,
+};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WindowsSystem {
@@ -13,7 +15,6 @@ pub struct WindowsSystem {
     pub disks: Vec<Win32DiskDrive>,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct OS {
     pub name: String,
@@ -21,7 +22,6 @@ pub struct OS {
     pub version: String,
     pub hostname: String,
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Cpu {
@@ -31,14 +31,12 @@ pub struct Cpu {
     pub core_count: usize,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Ram {
     pub total_memory: u64,
     pub free_memory: u64,
     pub used_memory: u64,
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Disk {

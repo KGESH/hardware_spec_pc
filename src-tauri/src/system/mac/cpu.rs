@@ -1,6 +1,5 @@
-use sysinfo::System;
 use crate::system::mac::dto::Cpu;
-
+use sysinfo::System;
 
 pub fn get_cpu_info(system: &System) -> Cpu {
     let cpu = &system.cpus()[0];

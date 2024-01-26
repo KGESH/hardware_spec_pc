@@ -1,13 +1,11 @@
 use sysinfo::System;
 
-
 mod cpu;
 mod disk;
-mod memory;
-mod os;
 pub mod dto;
 mod gpu;
-
+mod memory;
+mod os;
 
 pub fn get_mac_system_info() -> dto::MacSystem {
     let mut sys = System::new_all();

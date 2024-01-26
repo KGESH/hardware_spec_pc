@@ -37,7 +37,9 @@ pub struct Win32BaseBoard {
     // ... add other fields as needed ...
 }
 
-pub fn get_motherboard_info(wmi_con: &WMIConnection) -> Result<Vec<Win32BaseBoard>, Box<dyn std::error::Error>> {
+pub fn get_motherboard_info(
+    wmi_con: &WMIConnection,
+) -> Result<Vec<Win32BaseBoard>, Box<dyn std::error::Error>> {
     let boards: Vec<Win32BaseBoard> = wmi_con.query()?;
     for board in &boards {
         let board_detail = format!("{:#?}\n", board);

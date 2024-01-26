@@ -1,6 +1,5 @@
-use sysinfo::{System};
 use crate::system::mac::dto::Ram;
-
+use sysinfo::System;
 
 pub fn get_memory_info(system: &System) -> Vec<Ram> {
     let total_memory = system.total_memory();

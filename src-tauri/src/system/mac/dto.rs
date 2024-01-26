@@ -1,5 +1,4 @@
-use serde::{Serialize, Deserialize};
-
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct MacSystem {
@@ -10,7 +9,6 @@ pub struct MacSystem {
     pub disks: Vec<Disk>,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct OS {
     pub name: String,
@@ -18,7 +16,6 @@ pub struct OS {
     pub version: String,
     pub hostname: String,
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Cpu {
@@ -28,7 +25,6 @@ pub struct Cpu {
     pub core_count: usize,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Gpu {
     pub brand: String,
@@ -36,14 +32,12 @@ pub struct Gpu {
     pub core_count: usize,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Ram {
     pub total_memory: u64,
     pub free_memory: u64,
     pub used_memory: u64,
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Disk {
