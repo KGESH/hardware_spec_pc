@@ -7,11 +7,11 @@ import { useMutation } from '@tanstack/react-query';
 import { IComputer } from '@/types/model/computer/computerType.ts';
 import { Body, fetch } from '@tauri-apps/api/http';
 import { IResponse } from '@/types/dto/response/responseType.ts';
+import { IEstimateCreateResponseDto } from '@/types/dto/estimate/estimateDto.ts';
 import {
   createHardwareComponentsEncodingId,
   saveEncodedId,
 } from '@/services/estimate/id.ts';
-import { IEstimateCreateResponseDto } from '@/types/dto/estimate/estimateDto.ts';
 
 async function createEstimate({
   estimateId,
@@ -35,6 +35,7 @@ async function createEstimate({
     },
   );
 
+  console.log(response.data);
   const responseDto = response.data;
 
   if (responseDto.status !== 'success') throw new Error(responseDto.message);

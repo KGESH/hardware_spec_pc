@@ -22,6 +22,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
   if (dto.os_type === 'Windows') {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
+      hwKey: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`,
       kind: disk.InterfaceType,
       totalSpace: disk.Size,
       displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`, // Todo: Size labeling check
@@ -32,6 +33,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
   if (dto.os_type === 'Darwin') {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
+      hwKey: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`,
       kind: disk.kind,
       totalSpace: disk.total_space,
       displayName: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`, // Todo: Size labeling check
