@@ -58,6 +58,7 @@ export function transformRams(dto: ISystemInfo): IRam[] {
   if (dto.os_type === 'Windows') {
     return dto.system.rams.map((ram) => ({
       type: 'RAM',
+      hwKey: `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`,
       displayName: `${formatMemoryType(ram)} / ${ram.Speed} / ${formatBytes(ram.Capacity)}`,
       vendorName: formatRamVendor(ram),
     }));
@@ -66,6 +67,7 @@ export function transformRams(dto: ISystemInfo): IRam[] {
   if (dto.os_type === 'Darwin') {
     return dto.system.rams.map((ram) => ({
       type: 'RAM',
+      hwKey: formatBytes(ram.total_memory),
       displayName: formatBytes(ram.total_memory),
       vendorName: dto.system.cpu.vendor_id,
     }));

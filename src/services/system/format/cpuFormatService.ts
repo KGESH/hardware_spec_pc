@@ -25,28 +25,37 @@ export function transformCpu(dto: ISystemInfo): ICpu {
   if (dto.os_type === 'Darwin') {
     return {
       type: 'CPU',
+      hwKey: formatCpuDisplayName(dto),
       displayName: formatCpuDisplayName(dto),
       vendorName: formatCpuBrand(dto.system.cpu.vendor_id),
       coreCount: dto.system.cpu.core_count,
+      threadCount: null,
+      baseClock: null,
+      boostClock: null,
     };
   }
 
   if (dto.os_type === 'Windows') {
     return {
       type: 'CPU',
+      hwKey: formatCpuDisplayName(dto),
       displayName: formatCpuDisplayName(dto),
       vendorName: formatCpuBrand(dto.system.cpu[0].Manufacturer),
       coreCount: dto.system.cpu[0].NumberOfCores,
+      threadCount: dto.system.cpu[0].NumberOfLogicalProcessors ?? null,
+      baseClock: null,
+      boostClock: null,
     };
   }
 
   return {
     type: 'CPU',
+    hwKey: '',
     displayName: '',
     vendorName: '',
-    baseClock: 0,
-    boostClock: 0,
     coreCount: 0,
     threadCount: 0,
+    baseClock: 0,
+    boostClock: 0,
   };
 }
