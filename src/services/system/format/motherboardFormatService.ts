@@ -17,16 +17,18 @@ export function transformMotherboard(
   dto: ISystemInfo,
 ): IMotherboard | undefined {
   if (dto.os_type === 'Windows') {
+    const displayName =
+      dto.system.motherboard[0].Product ??
+      dto.system.motherboard[0].Model ??
+      dto.system.motherboard[0].Caption; // Caption or Name
     return {
       type: 'M/B',
-      displayName:
-        dto.system.motherboard[0].Product ??
-        dto.system.motherboard[0].Model ??
-        dto.system.motherboard[0].Caption, // Caption or Name
+      hwKey: displayName, // Todo: check hwKey
+      displayName,
       vendorName: formatMotherboardVendor(
         dto.system.motherboard[0].Manufacturer,
       ),
-      chipset: dto.system.motherboard[0].Product,
+      chipset: dto.system.motherboard[0].Product ?? displayName,
     };
   }
 }
