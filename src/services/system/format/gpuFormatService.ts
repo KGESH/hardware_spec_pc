@@ -17,6 +17,8 @@ export function transformGpu(dto: ISystemInfo): IGpu {
       hwKey: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
       displayName: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
       vendorName: dto.system.gpu.vendor_id,
+      chipset: `${dto.system.gpu.brand} / ${dto.system.gpu.core_count} Core`,
+      subVendorName: null,
     };
   }
 
@@ -26,6 +28,8 @@ export function transformGpu(dto: ISystemInfo): IGpu {
       hwKey: dto.system.gpu[0].Caption,
       displayName: dto.system.gpu[0].Caption,
       vendorName: formatGpuVendor(dto.system.gpu[0].AdapterCompatibility),
+      chipset: dto.system.gpu[0].VideoProcessor,
+      subVendorName: null,
     };
   }
 
@@ -33,6 +37,8 @@ export function transformGpu(dto: ISystemInfo): IGpu {
     type: 'GPU',
     hwKey: '',
     displayName: '',
+    chipset: '',
     vendorName: '',
+    subVendorName: null,
   };
 }
