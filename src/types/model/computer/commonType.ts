@@ -1,4 +1,4 @@
-type IHardwareType = 'CPU' | 'GPU' | 'RAM' | 'M/B' | 'DISK' | 'OTHER';
+type IHardwareType = 'CPU' | 'GPU' | 'RAM' | 'MB' | 'DISK' | 'OTHER';
 
 export type IHardware = {
   hwKey: string;
