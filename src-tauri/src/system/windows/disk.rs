@@ -17,6 +17,7 @@ pub struct Win32DiskDrive {
     pub manufacturer: Option<String>,
     pub media_type: Option<String>,
     pub model: Option<String>,
+    pub name: Option<String>,
     pub partitions: Option<u32>,
     pub pnp_device_id: Option<String>,
     pub sectors_per_track: Option<u32>,
