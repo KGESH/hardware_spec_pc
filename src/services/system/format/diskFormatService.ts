@@ -23,7 +23,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
       hwKey: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`,
-      kind: disk.InterfaceType,
+      kind: disk.InterfaceType.toLowerCase(),
       totalSpace: disk.Size,
       displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`, // Todo: Size labeling check
       vendorName: formatDiskVendor(disk),
@@ -34,7 +34,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
       hwKey: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`,
-      kind: disk.kind,
+      kind: disk.kind.toLowerCase(),
       totalSpace: disk.total_space,
       displayName: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`, // Todo: Size labeling check
       vendorName: dto.system.cpu.vendor_id, // Apple

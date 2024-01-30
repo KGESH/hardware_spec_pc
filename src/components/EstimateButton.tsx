@@ -1,7 +1,6 @@
 import { IComputer } from '@/types/model/computer/computerType';
 import { Button } from '@/components/ui/button';
 import { useEstimate } from '@/hooks/useEstimate';
-import { getOrCreateEstimateId } from '@/services/estimate/id.ts';
 
 type Props = IComputer;
 
@@ -11,7 +10,6 @@ export default function EstimateButton(props: Props) {
   const handleSubmit = () => {
     mutate({
       computer: props,
-      estimateId: getOrCreateEstimateId(),
     });
   };
 

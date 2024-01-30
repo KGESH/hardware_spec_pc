@@ -1,6 +1,6 @@
 export type IMacDisk = {
   name: string;
-  kind: 'SSD' | 'HDD';
+  kind: 'ssd' | 'hdd';
   file_system: string;
   total_space: number;
   available_space: number;
