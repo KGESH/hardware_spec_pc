@@ -19,6 +19,7 @@ export function formatDiskVendor(disk: IWindowsDisk) {
 }
 
 export function transformDisks(dto: ISystemInfo): IDisk[] {
+  console.log('transformDisks', dto);
   if (dto.os_type === 'Windows') {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
@@ -36,7 +37,7 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
       hwKey: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`,
       kind: disk.kind.toLowerCase(),
       totalSpace: disk.total_space,
-      displayName: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`, // Todo: Size labeling check
+      displayName: `${disk.name} / ${disk.kind.toLowerCase()} / ${formatBytes(disk.available_space)}`, // Todo: Size labeling check
       vendorName: dto.system.cpu.vendor_id, // Apple
     }));
   }
