@@ -38,14 +38,14 @@ pub fn get_disks_info(
     for disk in &disks {
         let disk_detail = format!("{:#?}\n", disk);
         println!("{}", disk_detail);
-        println!("======== Disk Name ========");
+        println!("======== WMI Disk Name ========");
         println!("Name: {}", disk.name.as_ref().unwrap());
     }
 
     // Todo: remove
     let debugDisks = sysinfo::Disks::new_with_refreshed_list();
     debugDisks.iter().for_each(|disk| {
-        println!("======== Disk ========");
+        println!("======== SysInfo Disk ========");
         let name = disk.name().to_str().unwrap().to_string();
         let kind = disk.kind().to_string();
         let file_system = disk.file_system().to_str().unwrap().to_string();
