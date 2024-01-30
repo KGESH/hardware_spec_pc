@@ -59,7 +59,6 @@ pub fn get_disks_info(
         println!("Total size: {}", total_space);
         println!("Disk Kind: {}", disk.kind());
         println!("Available space: {}", disk.available_space());
-        println!("Disk Type ID: {:?}", disk.type_id());
         println!("{:#?}", disk);
     });
 
