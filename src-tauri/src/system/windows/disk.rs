@@ -3,7 +3,6 @@ use std::any::Any;
 use wmi::{WMIConnection, WMIDateTime};
 
 use sysinfo;
-use sysinfo::Disks;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_DiskDrive")]
@@ -40,8 +39,9 @@ pub fn get_disks_info(
         println!("{}", disk_detail);
     }
 
-    let disks = Disks::new_with_refreshed_list();
-    disks.iter().for_each(|disk| {
+    // Todo: remove
+    let debugDisks = sysinfo::Disks::new_with_refreshed_list();
+    debugDisks.iter().for_each(|disk| {
         println!("======== Disk ========");
         let name = disk.name().to_str().unwrap().to_string();
         let kind = disk.kind().to_string();
