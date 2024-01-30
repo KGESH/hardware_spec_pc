@@ -1,5 +1,9 @@
 use serde::{Deserialize, Serialize};
+use std::any::Any;
 use wmi::{WMIConnection, WMIDateTime};
+
+use sysinfo;
+use sysinfo::Disks;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_DiskDrive")]
@@ -35,6 +39,24 @@ pub fn get_disks_info(
         let disk_detail = format!("{:#?}\n", disk);
         println!("{}", disk_detail);
     }
+
+    let disks = Disks::new_with_refreshed_list();
+    disks.iter().for_each(|disk| {
+        println!("======== Disk ========");
+        let name = disk.name().to_str().unwrap().to_string();
+        let kind = disk.kind().to_string();
+        let file_system = disk.file_system().to_str().unwrap().to_string();
+        let total_space = disk.total_space();
+        let available_space = disk.available_space(); // Todo: Check single disk system.
+        let removable = disk.is_removable();
+
+        println!("======== Disk ========");
+        println!("Total size: {}", total_space);
+        println!("Disk Kind: {}", disk.kind());
+        println!("Available space: {}", disk.available_space());
+        println!("Disk Type ID: {:?}", disk.type_id());
+        println!("{:#?}", disk);
+    });
 
     Ok(disks)
 }
