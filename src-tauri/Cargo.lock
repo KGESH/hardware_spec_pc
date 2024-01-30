@@ -1263,6 +1263,7 @@ dependencies = [
  "sysinfo",
  "tauri",
  "tauri-build",
+ "windows 0.52.0",
  "wmi",
 ]
 
