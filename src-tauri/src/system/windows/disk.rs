@@ -38,6 +38,8 @@ pub fn get_disks_info(
     for disk in &disks {
         let disk_detail = format!("{:#?}\n", disk);
         println!("{}", disk_detail);
+        println!("======== Disk Name ========");
+        println!("Name: {}", disk.name.as_ref().unwrap());
     }
 
     // Todo: remove
@@ -52,6 +54,7 @@ pub fn get_disks_info(
         let removable = disk.is_removable();
 
         println!("======== Disk ========");
+        println!("Name: {}", name);
         println!("Total size: {}", total_space);
         println!("Disk Kind: {}", disk.kind());
         println!("Available space: {}", disk.available_space());
