@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 // Todo: remove
-use windows_drives::drive;
 use wmi::{WMIConnection, WMIDateTime};
 
 use sysinfo;
