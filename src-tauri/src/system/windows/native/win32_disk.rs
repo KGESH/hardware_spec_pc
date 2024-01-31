@@ -18,6 +18,32 @@ use windows::Win32::System::Ioctl::{
 use windows::Win32::System::WindowsProgramming::{DRIVE_FIXED, DRIVE_REMOVABLE};
 use windows::Win32::System::IO::DeviceIoControl;
 
+struct HandleWrapper(HANDLE);
+
+impl HandleWrapper {
+    unsafe fn new(drive_name: &[u16], open_rights: FILE_ACCESS_RIGHTS) -> Result<Self, Error> {
+        let handle = CreateFileW(
+            PCWSTR::from_raw(drive_name.as_ptr()),
+            open_rights.0,
+            FILE_SHARE_READ | FILE_SHARE_WRITE,
+            None, // lpSecurityAttributes
+            OPEN_EXISTING,
+            Default::default(),
+            HANDLE::default(),
+        )?;
+
+        Ok(Self(handle))
+    }
+}
+
+impl Drop for HandleWrapper {
+    fn drop(&mut self) {
+        unsafe {
+            CloseHandle(self.0);
+        }
+    }
+}
+
 pub fn get_disk_kind(device_id: &str) -> Option<String> {
     let path = format!(r"\\.\{}", device_id);
     let wstr: Vec<u16> = OsStr::new(&path).encode_wide().chain(Some(0)).collect();
