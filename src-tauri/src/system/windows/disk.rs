@@ -6,9 +6,10 @@ use wmi::{WMIConnection, WMIDateTime};
 
 use std::ffi::{c_void, OsStr, OsString};
 use std::mem::size_of;
+use std::os::windows::ffi::OsStrExt;
 use std::os::windows::ffi::OsStringExt;
-use std::path::Path;
 
+use std::path::Path;
 use windows::core::{Error, HRESULT, PCWSTR};
 use windows::Win32::Foundation::{CloseHandle, HANDLE, MAX_PATH};
 use windows::Win32::Storage::FileSystem::{
