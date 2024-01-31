@@ -30,7 +30,7 @@ pub struct Win32DiskDrive {
     pub total_tracks: Option<u64>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
 pub struct Win32DiskDriveExpended {
     #[serde(flatten)]
