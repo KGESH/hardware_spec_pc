@@ -31,28 +31,29 @@ pub struct Win32DiskDrive {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Win32DiskDriveExpended {
+#[serde(rename_all = "PascalCase")]
+pub struct Win32DiskDriveWithKind {
     #[serde(flatten)]
     pub base: Win32DiskDrive, // Embed the base struct
     pub disk_kind: Option<String>, // Field to store disk kind
-    /// ... add other fields as needed ...
+                                   // ... add other fields as needed ...
 }
 
 pub fn get_disks_info(
     wmi_con: &WMIConnection,
-) -> Result<Vec<Win32DiskDriveExpended>, Box<dyn std::error::Error>> {
+) -> Result<Vec<Win32DiskDriveWithKind>, Box<dyn std::error::Error>> {
     let mut base_disks: Vec<Win32DiskDrive> = wmi_con.query()?;
 
     let mut disks = base_disks
         .iter()
         .map(|disk| {
             let disk_kind = win32_disk::get_disk_kind(disk.device_id.as_ref().unwrap());
-            Win32DiskDriveExpended {
+            Win32DiskDriveWithKind {
                 base: disk.clone(),
                 disk_kind,
             }
         })
-        .collect::<Vec<Win32DiskDriveExpended>>();
+        .collect::<Vec<Win32DiskDriveWithKind>>();
 
     Ok(disks)
 }
