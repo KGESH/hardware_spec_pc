@@ -96,14 +96,15 @@ fn get_disk_kind(device_id: &str) -> Option<String> {
     let handle = unsafe {
         CreateFileW(
             PCWSTR(wstr.as_ptr()),
-            0, // dwDesiredAccess, no access requested
+            0, // dwDesiredAccess
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             std::ptr::null(), // lpSecurityAttributes
             OPEN_EXISTING,
             0, // dwFlagsAndAttributes
             HANDLE(0),
         )
-    };
+    }
+    .ok()?; // Handle the Result
 
     if handle.is_invalid() {
         return None;
@@ -122,12 +123,12 @@ fn get_disk_kind(device_id: &str) -> Option<String> {
         DeviceIoControl(
             handle,
             IOCTL_STORAGE_QUERY_PROPERTY,
-            &mut query as *mut _ as *const c_void,
+            Some(&mut query as *mut _ as *const c_void),
             size_of::<STORAGE_PROPERTY_QUERY>() as u32,
-            &mut descriptor as *mut _ as *mut c_void,
+            Some(&mut descriptor as *mut _ as *mut c_void),
             size_of::<DEVICE_SEEK_PENALTY_DESCRIPTOR>() as u32,
-            &mut returned,
-            std::ptr::null_mut(),
+            Some(&mut returned),
+            None,
         )
     };
 
@@ -135,9 +136,9 @@ fn get_disk_kind(device_id: &str) -> Option<String> {
         CloseHandle(handle);
     }
 
-    if result.as_bool() {
+    if result.is_ok() {
         Some(
-            if descriptor.IncursSeekPenalty != 0 {
+            if descriptor.IncursSeekPenalty.as_bool() {
                 "HDD"
             } else {
                 "SSD"
