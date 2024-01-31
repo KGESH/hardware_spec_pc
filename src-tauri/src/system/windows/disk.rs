@@ -105,7 +105,7 @@ impl HandleWrapper {
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             None, // lpSecurityAttributes
             OPEN_EXISTING,
-            0, // dwFlagsAndAttributes
+            0.into(), // dwFlagsAndAttributes, converted to appropriate type
             HANDLE(0),
         )?;
 
