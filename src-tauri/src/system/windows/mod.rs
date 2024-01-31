@@ -7,6 +7,7 @@ pub mod dto;
 mod gpu;
 mod memory;
 mod motherboard;
+pub mod native;
 mod os;
 
 use cpu::Win32Processor;

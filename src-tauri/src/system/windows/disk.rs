@@ -24,6 +24,8 @@ use windows::Win32::System::Ioctl::{
 use windows::Win32::System::WindowsProgramming::{DRIVE_FIXED, DRIVE_REMOVABLE};
 use windows::Win32::System::IO::DeviceIoControl;
 
+use crate::system::windows::native::win32_disk;
+
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_DiskDrive")]
 #[serde(rename_all = "PascalCase")]
@@ -49,20 +51,40 @@ pub struct Win32DiskDrive {
     pub total_sectors: Option<u64>,
     pub total_tracks: Option<u64>,
     // ... add other fields as needed ...
+    // pub disk_kind: Option<String>, // Field to store disk kind
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Win32DiskDriveWithKind {
+    #[serde(flatten)]
+    pub base: Win32DiskDrive, // Embed the base struct
     pub disk_kind: Option<String>, // Field to store disk kind
 }
 
 pub fn get_disks_info(
     wmi_con: &WMIConnection,
-) -> Result<Vec<Win32DiskDrive>, Box<dyn std::error::Error>> {
-    let mut disks: Vec<Win32DiskDrive> = wmi_con.query()?;
-    for disk in disks.iter_mut() {
-        if let Some(ref device_id) = disk.device_id {
-            let disk_kind = get_disk_kind(device_id);
-            disk.disk_kind = disk_kind;
-            println!("Fetched Disk kind: {:?}", disk.disk_kind);
-        }
-    }
+) -> Result<Vec<Win32DiskDriveWithKind>, Box<dyn std::error::Error>> {
+    let mut base_disks: Vec<Win32DiskDrive> = wmi_con.query()?;
+
+    let mut disks = base_disks
+        .iter()
+        .map(|disk| {
+            let disk_kind = win32_disk::get_disk_kind(disk.device_id.as_ref().unwrap());
+            Win32DiskDriveWithKind {
+                base: disk.clone(),
+                disk_kind,
+            }
+        })
+        .collect::<Vec<Win32DiskDriveWithKind>>();
+
+    // for disk in disks.iter_mut() {
+    //     if let Some(ref device_id) = disk.device_id {
+    //         let disk_kind = win32_disk::get_disk_kind(device_id);
+    //         // disk.disk_kind = disk_kind;
+    //         // println!("Fetched Disk kind: {:?}", disk.disk_kind);
+    //     }
+    // }
+
     // for disk in &disks {
     //     let disk_detail = format!("{:#?}\n", disk);
     //     println!("{}", disk_detail);

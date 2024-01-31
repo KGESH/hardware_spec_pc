@@ -18,4 +18,6 @@ export type IWindowsDisk = {
   TotalHeads: number | null;
   TotalSectors: number | null;
   TotalTracks: number | null;
+  disk_kind: string | null;
+  DiskKind: string | null;
 };
