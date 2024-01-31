@@ -15,7 +15,7 @@ pub struct WindowsSystem {
     pub disks: Vec<Win32DiskDriveExpended>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct OS {
     pub name: String,
     pub kernel_version: String,
