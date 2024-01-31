@@ -1,9 +1,6 @@
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { IDisk } from '@/types/model/computer/diskType.ts';
-import {
-  formatBytes,
-  formatDecimalDiskSize,
-} from '@/services/system/format/commonFormatService.ts';
+import { formatBytes } from '@/services/system/format/commonFormatService.ts';
 import { DISK_VENDOR_NAME_TABLE } from '@/constants/diskConstants.ts';
 import { IWindowsDisk } from '@/types/dto/windows/diskDto.ts';
 
@@ -23,10 +20,10 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
   if (dto.os_type === 'Windows') {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
-      hwKey: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`,
+      hwKey: `${disk.Caption} / ${formatBytes(disk.Size)}`,
       kind: disk.DiskKind.toLowerCase(),
       totalSpace: disk.Size,
-      displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)} / ${disk.DiskKind}`, // Todo: Size labeling check
+      displayName: `${disk.Caption} / ${formatBytes(disk.Size)} / ${disk.DiskKind}`, // Todo: Size labeling check
       vendorName: formatDiskVendor(disk),
     }));
   }
