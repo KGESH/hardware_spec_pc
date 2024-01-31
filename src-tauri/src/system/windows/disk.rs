@@ -31,7 +31,6 @@ pub struct Win32DiskDrive {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "PascalCase")]
 pub struct Win32DiskDriveExpended {
     #[serde(flatten)]
     pub base: Win32DiskDrive, // Embed the base struct
