@@ -59,7 +59,7 @@ pub fn get_disks_info(
     for disk in disks.iter_mut() {
         if let Some(ref device_id) = disk.device_id {
             // disk.disk_kind = get_disk_kind(device_id);
-            let disk_kind = get_disk_kind(device_id);
+            let disk_kind = get_disk_kind(device_id).unwrap_or("Fetch fail".to_string());
             println!("Fetched Disk kind: {:?}", disk_kind);
         }
     }
