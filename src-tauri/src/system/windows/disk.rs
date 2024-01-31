@@ -97,7 +97,7 @@ impl HandleWrapper {
     unsafe fn new(drive_name: &[u16], open_rights: FILE_ACCESS_RIGHTS) -> Result<Self, Error> {
         let handle = CreateFileW(
             PCWSTR::from_raw(drive_name.as_ptr()),
-            open_rights,
+            open_rights.0,
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             None, // lpSecurityAttributes
             OPEN_EXISTING,
