@@ -58,6 +58,7 @@ pub fn get_disks_info(
     for disk in disks.iter_mut() {
         if let Some(ref device_id) = disk.device_id {
             disk.disk_kind = get_disk_kind(device_id);
+            println!("Fetched Disk kind: {:?}", disk.disk_kind);
         }
     }
     // for disk in &disks {
@@ -92,15 +93,14 @@ pub fn get_disks_info(
 fn get_disk_kind(device_id: &str) -> Option<String> {
     let path = format!(r"\\.\{}", device_id);
     let wstr: Vec<u16> = OsStr::new(&path).encode_wide().chain(Some(0)).collect();
-
     let handle = unsafe {
         CreateFileW(
             PCWSTR(wstr.as_ptr()),
-            0,
+            0, // dwDesiredAccess, no access requested
             FILE_SHARE_READ | FILE_SHARE_WRITE,
-            std::ptr::null_mut(),
+            std::ptr::null(), // lpSecurityAttributes
             OPEN_EXISTING,
-            0,
+            0, // dwFlagsAndAttributes
             HANDLE(0),
         )
     };
@@ -111,22 +111,21 @@ fn get_disk_kind(device_id: &str) -> Option<String> {
 
     let mut query = STORAGE_PROPERTY_QUERY {
         PropertyId: StorageDeviceSeekPenaltyProperty,
-        QueryType: 0,
+        QueryType: PropertyStandardQuery,
         AdditionalParameters: [0],
     };
 
     let mut descriptor: DEVICE_SEEK_PENALTY_DESCRIPTOR = unsafe { std::mem::zeroed() };
-
-    let mut returned = 0;
+    let mut returned: u32 = 0;
 
     let result = unsafe {
         DeviceIoControl(
             handle,
             IOCTL_STORAGE_QUERY_PROPERTY,
-            &mut query as *mut _ as _,
-            std::mem::size_of_val(&query) as u32,
-            &mut descriptor as *mut _ as _,
-            std::mem::size_of_val(&descriptor) as u32,
+            &mut query as *mut _ as *const c_void,
+            size_of::<STORAGE_PROPERTY_QUERY>() as u32,
+            &mut descriptor as *mut _ as *mut c_void,
+            size_of::<DEVICE_SEEK_PENALTY_DESCRIPTOR>() as u32,
             &mut returned,
             std::ptr::null_mut(),
         )
