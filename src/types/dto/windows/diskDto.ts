@@ -3,7 +3,8 @@ export type IWindowsDisk = {
   Model: string | null;
   Size: number;
   Manufacturer: string;
-  InterfaceType: string; // Todo: Check SSD or HDD
+  DiskKind: string; // HDD or SSD
+  InterfaceType: string;
   SerialNumber: string | null;
   Availability: number | null;
   BytesPerSector: number | null;
@@ -18,6 +19,4 @@ export type IWindowsDisk = {
   TotalHeads: number | null;
   TotalSectors: number | null;
   TotalTracks: number | null;
-  disk_kind: string | null;
-  DiskKind: string | null;
 };
