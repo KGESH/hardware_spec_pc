@@ -47,9 +47,7 @@ impl Drop for HandleWrapper {
 pub fn get_disk_kind(device_id: &str) -> Option<String> {
     let path = format!(r"\\.\{}", device_id);
     let wstr: Vec<u16> = OsStr::new(&path).encode_wide().chain(Some(0)).collect();
-    let handle_wrapper = unsafe {
-        crate::system::windows::disk::HandleWrapper::new(&wstr, Default::default()).ok()?
-    };
+    let handle_wrapper = unsafe { HandleWrapper::new(&wstr, Default::default()).ok()? };
 
     let mut query = STORAGE_PROPERTY_QUERY {
         PropertyId: StorageDeviceSeekPenaltyProperty,
