@@ -58,7 +58,7 @@ pub fn get_disks_info(
     let mut disks: Vec<Win32DiskDrive> = wmi_con.query()?;
     for disk in disks.iter_mut() {
         if let Some(ref device_id) = disk.device_id {
-            let disk_kind = get_disk_kind(device_id).unwrap_or("Fetch fail".to_string());
+            let disk_kind = get_disk_kind(device_id);
             disk.disk_kind = disk_kind;
             println!("Fetched Disk kind: {:?}", disk.disk_kind);
         }
