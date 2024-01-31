@@ -94,14 +94,10 @@ pub fn get_disks_info(
 struct HandleWrapper(HANDLE);
 
 impl HandleWrapper {
-    unsafe fn new(drive_name: &str) -> Result<Self, Error> {
-        let wstr: Vec<u16> = OsStr::new(drive_name)
-            .encode_wide()
-            .chain(Some(0))
-            .collect();
+    unsafe fn new(drive_name: &[u16], open_rights: u32) -> Result<Self, Error> {
         let handle = CreateFileW(
-            PCWSTR(wstr.as_ptr()),
-            0, // dwDesiredAccess
+            PCWSTR::from_raw(drive_name.as_ptr()),
+            open_rights,
             FILE_SHARE_READ | FILE_SHARE_WRITE,
             None, // lpSecurityAttributes
             OPEN_EXISTING,
