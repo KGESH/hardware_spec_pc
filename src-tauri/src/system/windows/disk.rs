@@ -49,7 +49,7 @@ pub struct Win32DiskDrive {
     pub total_sectors: Option<u64>,
     pub total_tracks: Option<u64>,
     // ... add other fields as needed ...
-    pub disk_kind: Option<String>, // Field to store disk kind
+    // pub disk_kind: Option<String>, // Field to store disk kind
 }
 
 pub fn get_disks_info(
@@ -58,8 +58,9 @@ pub fn get_disks_info(
     let mut disks: Vec<Win32DiskDrive> = wmi_con.query()?;
     for disk in disks.iter_mut() {
         if let Some(ref device_id) = disk.device_id {
-            disk.disk_kind = get_disk_kind(device_id);
-            println!("Fetched Disk kind: {:?}", disk.disk_kind);
+            // disk.disk_kind = get_disk_kind(device_id);
+            let disk_kind = get_disk_kind(device_id);
+            println!("Fetched Disk kind: {:?}", disk_kind);
         }
     }
     // for disk in &disks {
