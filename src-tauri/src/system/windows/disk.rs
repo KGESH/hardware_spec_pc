@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
-// Todo: remove
+use sysinfo;
 use wmi::{WMIConnection, WMIDateTime};
 
-use sysinfo;
+use crate::system::windows::native::win32_disk;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename = "Win32_DiskDrive")]
 #[serde(rename_all = "PascalCase")]
 pub struct Win32DiskDrive {
@@ -28,38 +28,32 @@ pub struct Win32DiskDrive {
     pub total_heads: Option<u32>,
     pub total_sectors: Option<u64>,
     pub total_tracks: Option<u64>,
-    // ... add other fields as needed ...
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "PascalCase")]
+pub struct Win32DiskDriveExpended {
+    #[serde(flatten)]
+    pub base: Win32DiskDrive, // Embed the base struct
+    pub disk_kind: Option<String>, // Field to store disk kind
+                                   // ... add other fields as needed ...
 }
 
 pub fn get_disks_info(
     wmi_con: &WMIConnection,
-) -> Result<Vec<Win32DiskDrive>, Box<dyn std::error::Error>> {
-    let disks: Vec<Win32DiskDrive> = wmi_con.query()?;
-    for disk in &disks {
-        let disk_detail = format!("{:#?}\n", disk);
-        println!("{}", disk_detail);
-        println!("======== WMI Disk Name ========");
-        println!("Name: {}", disk.name.as_ref().unwrap());
-    }
+) -> Result<Vec<Win32DiskDriveExpended>, Box<dyn std::error::Error>> {
+    let mut base_disks: Vec<Win32DiskDrive> = wmi_con.query()?;
 
-    // Todo: remove
-    let debugDisks = sysinfo::Disks::new_with_refreshed_list();
-    debugDisks.iter().for_each(|disk| {
-        println!("======== SysInfo Disk ========");
-        let name = disk.name().to_str().unwrap().to_string();
-        let kind = disk.kind().to_string();
-        let file_system = disk.file_system().to_str().unwrap().to_string();
-        let total_space = disk.total_space();
-        let available_space = disk.available_space(); // Todo: Check single disk system.
-        let removable = disk.is_removable();
-
-        println!("======== Disk ========");
-        println!("Name: {}", name);
-        println!("Total size: {}", total_space);
-        println!("Disk Kind: {}", disk.kind());
-        println!("Available space: {}", disk.available_space());
-        println!("{:#?}", disk);
-    });
+    let mut disks = base_disks
+        .iter()
+        .map(|disk| {
+            let disk_kind = win32_disk::get_disk_kind(disk.device_id.as_ref().unwrap());
+            Win32DiskDriveExpended {
+                base: disk.clone(),
+                disk_kind,
+            }
+        })
+        .collect::<Vec<Win32DiskDriveExpended>>();
 
     Ok(disks)
 }

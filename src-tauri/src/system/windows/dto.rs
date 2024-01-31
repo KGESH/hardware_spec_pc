@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 use crate::system::windows::{
-    Win32BaseBoard, Win32DiskDrive, Win32OperatingSystem, Win32PhysicalMemory, Win32Processor,
-    Win32VideoController,
+    Win32BaseBoard, Win32DiskDrive, Win32DiskDriveExpended, Win32OperatingSystem,
+    Win32PhysicalMemory, Win32Processor, Win32VideoController,
 };
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -12,7 +12,7 @@ pub struct WindowsSystem {
     pub motherboard: Vec<Win32BaseBoard>,
     pub gpu: Vec<Win32VideoController>,
     pub rams: Vec<Win32PhysicalMemory>,
-    pub disks: Vec<Win32DiskDrive>,
+    pub disks: Vec<Win32DiskDriveExpended>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

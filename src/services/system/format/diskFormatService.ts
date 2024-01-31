@@ -24,9 +24,9 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
       hwKey: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`,
-      kind: disk.InterfaceType.toLowerCase(),
+      kind: disk.DiskKind.toLowerCase(),
       totalSpace: disk.Size,
-      displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)}`, // Todo: Size labeling check
+      displayName: `${disk.Caption} / ${formatDecimalDiskSize(disk.Size)} / ${disk.DiskKind}`, // Todo: Size labeling check
       vendorName: formatDiskVendor(disk),
     }));
   }

@@ -7,10 +7,11 @@ pub mod dto;
 mod gpu;
 mod memory;
 mod motherboard;
+pub mod native;
 mod os;
 
 use cpu::Win32Processor;
-use disk::Win32DiskDrive;
+use disk::{Win32DiskDrive, Win32DiskDriveExpended};
 use gpu::Win32VideoController;
 use memory::Win32PhysicalMemory;
 use motherboard::Win32BaseBoard;
