@@ -90,25 +90,39 @@ pub fn get_disks_info(
     Ok(disks)
 }
 
-fn get_disk_kind(device_id: &str) -> Option<String> {
-    let path = format!(r"\\.\{}", device_id);
-    let wstr: Vec<u16> = OsStr::new(&path).encode_wide().chain(Some(0)).collect();
-    let handle = unsafe {
-        CreateFileW(
+struct HandleWrapper(HANDLE);
+
+impl HandleWrapper {
+    unsafe fn new(drive_name: &str) -> Result<Self, Error> {
+        let wstr: Vec<u16> = OsStr::new(drive_name)
+            .encode_wide()
+            .chain(Some(0))
+            .collect();
+        let handle = CreateFileW(
             PCWSTR(wstr.as_ptr()),
             0, // dwDesiredAccess
             FILE_SHARE_READ | FILE_SHARE_WRITE,
-            std::ptr::null(), // lpSecurityAttributes
+            None, // lpSecurityAttributes
             OPEN_EXISTING,
             0, // dwFlagsAndAttributes
             HANDLE(0),
-        )
-    }
-    .ok()?; // Handle the Result
+        )?;
 
-    if handle.is_invalid() {
-        return None;
+        Ok(Self(handle))
     }
+}
+
+impl Drop for HandleWrapper {
+    fn drop(&mut self) {
+        unsafe {
+            CloseHandle(self.0);
+        }
+    }
+}
+
+fn get_disk_kind(device_id: &str) -> Option<String> {
+    let path = format!(r"\\.\{}", device_id);
+    let handle_wrapper = unsafe { HandleWrapper::new(&path).ok()? };
 
     let mut query = STORAGE_PROPERTY_QUERY {
         PropertyId: StorageDeviceSeekPenaltyProperty,
@@ -121,7 +135,7 @@ fn get_disk_kind(device_id: &str) -> Option<String> {
 
     let result = unsafe {
         DeviceIoControl(
-            handle,
+            handle_wrapper.0,
             IOCTL_STORAGE_QUERY_PROPERTY,
             Some(&mut query as *mut _ as *const c_void),
             size_of::<STORAGE_PROPERTY_QUERY>() as u32,
@@ -131,10 +145,6 @@ fn get_disk_kind(device_id: &str) -> Option<String> {
             None,
         )
     };
-
-    unsafe {
-        CloseHandle(handle);
-    }
 
     if result.is_ok() {
         Some(
