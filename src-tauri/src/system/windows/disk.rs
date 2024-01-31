@@ -4,20 +4,24 @@ use sysinfo;
 
 use wmi::{WMIConnection, WMIDateTime};
 
-use std::ffi::OsStr;
-use std::os::windows::ffi::OsStrExt;
-use windows::{
-    core::{Error, HRESULT, PCWSTR},
-    Win32::{
-        Foundation::{CloseHandle, HANDLE, MAX_PATH},
-        Storage::FileSystem::{CreateFileW, FILE_SHARE_READ, FILE_SHARE_WRITE, OPEN_EXISTING},
-        System::Ioctl::{
-            StorageDeviceSeekPenaltyProperty, DEVICE_SEEK_PENALTY_DESCRIPTOR,
-            IOCTL_STORAGE_QUERY_PROPERTY, STORAGE_PROPERTY_QUERY,
-        },
-        System::IO::DeviceIoControl,
-    },
+use std::ffi::{c_void, OsStr, OsString};
+use std::mem::size_of;
+use std::os::windows::ffi::OsStringExt;
+use std::path::Path;
+
+use windows::core::{Error, HRESULT, PCWSTR};
+use windows::Win32::Foundation::{CloseHandle, HANDLE, MAX_PATH};
+use windows::Win32::Storage::FileSystem::{
+    CreateFileW, FindFirstVolumeW, FindNextVolumeW, FindVolumeClose, GetDiskFreeSpaceExW,
+    GetDriveTypeW, GetVolumeInformationW, GetVolumePathNamesForVolumeNameW, FILE_ACCESS_RIGHTS,
+    FILE_SHARE_READ, FILE_SHARE_WRITE, OPEN_EXISTING,
 };
+use windows::Win32::System::Ioctl::{
+    PropertyStandardQuery, StorageDeviceSeekPenaltyProperty, DEVICE_SEEK_PENALTY_DESCRIPTOR,
+    IOCTL_STORAGE_QUERY_PROPERTY, STORAGE_PROPERTY_QUERY,
+};
+use windows::Win32::System::WindowsProgramming::{DRIVE_FIXED, DRIVE_REMOVABLE};
+use windows::Win32::System::IO::DeviceIoControl;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_DiskDrive")]
