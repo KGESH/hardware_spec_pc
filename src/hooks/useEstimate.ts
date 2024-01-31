@@ -14,33 +14,35 @@ import {
 } from '@/services/estimate/id.ts';
 
 async function createEstimate({
-  estimateId,
   computer,
 }: {
-  estimateId: string;
   computer: IComputer;
 }): Promise<IEstimateCreateResponseDto> {
   const encodedId = createHardwareComponentsEncodingId(computer);
-  const endpoint = new URL(
-    `/estimate/${estimateId}/${encodedId}`,
-    ESTIMATE_API_BASE_URL,
-  );
+  const endpoint = new URL(`/estimate/${encodedId}`, ESTIMATE_API_BASE_URL);
 
-  const response = await fetch<IResponse<IEstimateCreateResponseDto>>(
-    endpoint.href,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: Body.json(computer),
-    },
-  );
+  try {
+    const response = await fetch<IResponse<IEstimateCreateResponseDto>>(
+      endpoint.href,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: Body.json(computer),
+      },
+    );
 
-  console.log(response.data);
-  const responseDto = response.data;
+    console.log(response);
+    const responseDto = response.data;
 
-  if (responseDto.status !== 'success') throw new Error(responseDto.message);
+    if (responseDto.status !== 'success') {
+      console.error(responseDto);
+      throw new Error(responseDto.message);
+    }
 
-  return responseDto.data;
+    return responseDto.data;
+  } catch (e) {
+    throw e;
+  }
 }
 
 export const useEstimate = () => {

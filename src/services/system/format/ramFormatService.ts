@@ -34,11 +34,12 @@ export function formatPhysicalMemoryType(ram: IWindowsRam): string {
 }
 
 export function formatMemoryType(ram: IWindowsRam): string {
-  if (ram.MemoryType === 0 && ram.SMBIOSMemoryType === 0) {
+  console.log(`formatMemoryType: `, ram);
+  if (ram.MemoryType === 0 && ram.SmbiosMemoryType === 0) {
     return 'UNKNOWN';
   }
 
-  switch (ram.SMBIOSMemoryType) {
+  switch (ram.SmbiosMemoryType) {
     case MEMORY_TYPE.DDR1:
       return 'ddr1';
     case MEMORY_TYPE.DDR2:

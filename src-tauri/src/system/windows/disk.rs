@@ -1,5 +1,8 @@
 use serde::{Deserialize, Serialize};
+// Todo: remove
 use wmi::{WMIConnection, WMIDateTime};
+
+use sysinfo;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_DiskDrive")]
@@ -14,6 +17,7 @@ pub struct Win32DiskDrive {
     pub manufacturer: Option<String>,
     pub media_type: Option<String>,
     pub model: Option<String>,
+    pub name: Option<String>,
     pub partitions: Option<u32>,
     pub pnp_device_id: Option<String>,
     pub sectors_per_track: Option<u32>,
@@ -34,7 +38,28 @@ pub fn get_disks_info(
     for disk in &disks {
         let disk_detail = format!("{:#?}\n", disk);
         println!("{}", disk_detail);
+        println!("======== WMI Disk Name ========");
+        println!("Name: {}", disk.name.as_ref().unwrap());
     }
+
+    // Todo: remove
+    let debugDisks = sysinfo::Disks::new_with_refreshed_list();
+    debugDisks.iter().for_each(|disk| {
+        println!("======== SysInfo Disk ========");
+        let name = disk.name().to_str().unwrap().to_string();
+        let kind = disk.kind().to_string();
+        let file_system = disk.file_system().to_str().unwrap().to_string();
+        let total_space = disk.total_space();
+        let available_space = disk.available_space(); // Todo: Check single disk system.
+        let removable = disk.is_removable();
+
+        println!("======== Disk ========");
+        println!("Name: {}", name);
+        println!("Total size: {}", total_space);
+        println!("Disk Kind: {}", disk.kind());
+        println!("Available space: {}", disk.available_space());
+        println!("{:#?}", disk);
+    });
 
     Ok(disks)
 }

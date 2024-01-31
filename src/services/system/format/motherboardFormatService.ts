@@ -22,7 +22,7 @@ export function transformMotherboard(
       dto.system.motherboard[0].Model ??
       dto.system.motherboard[0].Caption; // Caption or Name
     return {
-      type: 'M/B',
+      type: 'MB',
       hwKey: displayName, // Todo: check hwKey
       displayName,
       vendorName: formatMotherboardVendor(
