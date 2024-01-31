@@ -1,3 +1,6 @@
+// Custom native win32 disk implementation for sysinfo crate.
+// https://github.com/GuillaumeGomez/sysinfo/blob/master/src/windows/disk.rs
+
 use std::ffi::{c_void, OsStr, OsString};
 use std::mem::size_of;
 use std::os::windows::ffi::OsStrExt;
