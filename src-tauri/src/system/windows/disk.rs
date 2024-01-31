@@ -26,7 +26,7 @@ use windows::Win32::System::IO::DeviceIoControl;
 
 use crate::system::windows::native::win32_disk;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename = "Win32_DiskDrive")]
 #[serde(rename_all = "PascalCase")]
 pub struct Win32DiskDrive {
