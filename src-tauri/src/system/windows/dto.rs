@@ -5,7 +5,7 @@ use crate::system::windows::{
     Win32PhysicalMemory, Win32Processor, Win32VideoController,
 };
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct WindowsSystem {
     pub os: Vec<Win32OperatingSystem>,
     pub cpu: Vec<Win32Processor>,
