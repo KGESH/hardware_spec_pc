@@ -4,6 +4,21 @@ use sysinfo;
 
 use wmi::{WMIConnection, WMIDateTime};
 
+use std::ffi::OsStr;
+use std::os::windows::ffi::OsStrExt;
+use windows::{
+    core::{Error, HRESULT, PCWSTR},
+    Win32::{
+        Foundation::{CloseHandle, HANDLE, MAX_PATH},
+        Storage::FileSystem::{CreateFileW, FILE_SHARE_READ, FILE_SHARE_WRITE, OPEN_EXISTING},
+        System::Ioctl::{
+            StorageDeviceSeekPenaltyProperty, DEVICE_SEEK_PENALTY_DESCRIPTOR,
+            IOCTL_STORAGE_QUERY_PROPERTY, STORAGE_PROPERTY_QUERY,
+        },
+        System::IO::DeviceIoControl,
+    },
+};
+
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_DiskDrive")]
 #[serde(rename_all = "PascalCase")]
