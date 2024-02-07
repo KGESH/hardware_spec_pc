@@ -6,5 +6,5 @@ export function formatBytes(bytes: number): string {
 }
 
 export function formatDecimalDiskSize(bytes: number): string {
-  return prettyBytes(bytes, { maximumFractionDigits: 1 });
+  return prettyBytes(bytes, { maximumFractionDigits: 1, space: false });
 }
