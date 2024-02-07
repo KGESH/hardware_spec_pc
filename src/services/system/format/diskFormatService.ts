@@ -1,9 +1,6 @@
 import { ISystemInfo } from '@/types/dto/commonDto.ts';
 import { IDisk } from '@/types/model/computer/diskType.ts';
-import {
-  formatBytes,
-  formatDecimalDiskSize,
-} from '@/services/system/format/commonFormatService.ts';
+import { formatDecimalDiskSize } from '@/services/system/format/commonFormatService.ts';
 import { DISK_VENDOR_NAME_TABLE } from '@/constants/diskConstants.ts';
 import { IWindowsDisk } from '@/types/dto/windows/diskDto.ts';
 
@@ -34,10 +31,10 @@ export function transformDisks(dto: ISystemInfo): IDisk[] {
   if (dto.os_type === 'Darwin') {
     return dto.system.disks.map((disk) => ({
       type: 'DISK',
-      hwKey: `${disk.name} / ${disk.kind} / ${formatBytes(disk.available_space)}`,
+      hwKey: `${disk.name} / ${disk.kind} / ${formatDecimalDiskSize(disk.available_space)}`,
       kind: disk.kind.toLowerCase(),
       totalSpace: disk.total_space,
-      displayName: `${disk.name} / ${disk.kind.toLowerCase()} / ${formatBytes(disk.available_space)}`, // Todo: Size labeling check
+      displayName: `${disk.name} / ${disk.kind.toLowerCase()} / ${formatDecimalDiskSize(disk.total_space)}`, // Todo: Size labeling check
       vendorName: dto.system.cpu.vendor_id, // Apple
     }));
   }

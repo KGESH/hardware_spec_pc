@@ -10,6 +10,7 @@ export function formatGpuVendor(sourceName: string): string {
 
   return vendor;
 }
+
 export function transformGpu(dto: ISystemInfo): IGpu {
   if (dto.os_type === 'Darwin') {
     return {
