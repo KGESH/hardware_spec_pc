@@ -6,5 +6,5 @@ export function formatBytes(bytes: number): string {
 }
 
 export function formatDecimalDiskSize(bytes: number): string {
-  return byteFormat(bytes, { unit: 'TB' });
+  return prettyBytes(bytes, { maximumFractionDigits: 1 });
 }
