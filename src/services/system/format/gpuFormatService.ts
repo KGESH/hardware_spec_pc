@@ -27,7 +27,7 @@ export function transformGpu(dto: ISystemInfo): IGpu {
     return {
       type: 'GPU',
       hwKey: dto.system.gpu[0].Caption,
-      displayName: dto.system.gpu[0].Caption,
+      displayName: `${dto.system.gpu[0].Caption} ${dto.system.gpu[0].AdapterRAM ?? ''}`, // Todo: Check display name
       vendorName: formatGpuVendor(dto.system.gpu[0].AdapterCompatibility),
       chipset: dto.system.gpu[0].VideoProcessor,
       subVendorName: null,

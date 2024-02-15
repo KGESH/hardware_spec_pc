@@ -9,6 +9,7 @@ mod memory;
 mod motherboard;
 pub mod native;
 mod os;
+mod platform;
 
 use cpu::Win32Processor;
 use disk::{Win32DiskDrive, Win32DiskDriveExpended};
@@ -16,6 +17,7 @@ use gpu::Win32VideoController;
 use memory::Win32PhysicalMemory;
 use motherboard::Win32BaseBoard;
 use os::Win32OperatingSystem;
+use platform::Win32SystemEnclosure;
 use serde::Deserialize;
 use wmi::{COMLibrary, Variant, WMIConnection, WMIDateTime};
 
@@ -39,10 +41,12 @@ pub fn get_windows_system_info() -> Result<dto::WindowsSystem, Box<dyn std::erro
     let gpu = gpu::get_gpu_info(&wmi_con)?;
     println!("========let os = os::get_os_info(&wmi_con)?;========");
     let os = os::get_os_info(&wmi_con)?;
+    let platform = platform::get_platform_info(&wmi_con)?;
 
     println!("========let windows_system = dto::WindowsSystem========");
     let windows_system = dto::WindowsSystem {
         os,
+        platform,
         cpu,
         motherboard,
         rams,
