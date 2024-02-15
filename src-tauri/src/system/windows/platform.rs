@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use wmi::{WMIConnection, WMIDateTime};
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename = "Win32_OperatingSystem")]
