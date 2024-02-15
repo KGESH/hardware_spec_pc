@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use wmi::{WMIConnection, WMIDateTime};
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(rename = "Win32_OperatingSystem")]
+#[serde(rename = "Win32_SystemEnclosure")]
 #[serde(rename_all = "PascalCase")]
 pub struct Win32SystemEnclosure {
     pub chassis_types: Option<Vec<u16>>, // 3: Desktop, 9: Laptop, 10: Notebook
