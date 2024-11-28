@@ -10,6 +10,7 @@ import { IResponse } from '@/types/dto/response/responseType.ts';
 import { IEstimateCreateResponseDto } from '@/types/dto/estimate/estimateDto.ts';
 import {
   createHardwareComponentsEncodingId,
+  encodePcSpecToBase64,
   saveEncodedId,
 } from '@/services/estimate/id.ts';
 
@@ -18,8 +19,13 @@ async function createEstimate({
 }: {
   computer: IComputer;
 }): Promise<IEstimateCreateResponseDto> {
-  const encodedId = createHardwareComponentsEncodingId(computer);
-  const endpoint = new URL(`/estimate/${encodedId}`, ESTIMATE_API_BASE_URL);
+  // const encodedId = createHardwareComponentsEncodingId(computer);
+  // const endpoint = new URL(`/estimate/${encodedId}`, ESTIMATE_API_BASE_URL);
+  const USER_WEB_URL =
+    localStorage.getItem('USER_WEB_URL') || 'http://localhost:3000';
+  const encoded = encodePcSpecToBase64(computer);
+  const endpoint = new URL(USER_WEB_URL);
+  endpoint.searchParams.set('items', encoded);
 
   try {
     const response = await fetch<IResponse<IEstimateCreateResponseDto>>(
@@ -47,17 +53,21 @@ async function createEstimate({
 
 export const useEstimate = () => {
   return useMutation({
-    mutationFn: createEstimate,
-    onSuccess: async ({ estimateId, encodedId }) => {
-      saveEncodedId(encodedId);
-
-      const url = new URL(
-        `/estimate/${estimateId}/${encodedId}`,
-        ESTIMATE_HOME_PAGE_URL,
-      );
+    mutationFn: async (pcSpec: IComputer) => encodePcSpecToBase64(pcSpec),
+    // mutationFn: createEstimate,
+    onSuccess: async (encoded) => {
+      // saveEncodedId(encodedId);
+      const USER_WEB_URL =
+        localStorage.getItem('USER_WEB_URL') || 'http://localhost:3000';
+      const endpoint = new URL(USER_WEB_URL);
+      endpoint.searchParams.set('items', encoded);
+      // const url = new URL(
+      //   `/estimate/${estimateId}/${encodedId}`,
+      //   ESTIMATE_HOME_PAGE_URL,
+      // );
 
       // Open default web browser
-      return await shell.open(url.href);
+      return await shell.open(endpoint.href);
     },
     onError: (error) => {
       console.log('error', error);

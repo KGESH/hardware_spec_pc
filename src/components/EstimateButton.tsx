@@ -8,9 +8,7 @@ export default function EstimateButton(props: Props) {
   const { mutate, isSuccess, isPending } = useEstimate();
 
   const handleSubmit = () => {
-    mutate({
-      computer: props,
-    });
+    mutate(props);
   };
 
   if (isSuccess) {
